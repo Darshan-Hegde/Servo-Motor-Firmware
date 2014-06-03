@@ -1,0 +1,43 @@
+Documentation For Servo Motor Firmware
+
+    Note: there are total of eight servo[servo1 to servo8]
+
+Commands for servo in serial mode:
+“$_servo_no_pwm_/n”//no can be from 0 to 8, and pwm value is 000 to 180.
+
+Example:
+
+ Serial.pirntln(“$ servo 1 180 /n”);//this will make servo 1 to move at 180 degree position.
+
+commands for servo in i2c:
+             it is same as in serial mode
+	“$_servo_no_pwm_/n”//no can be from 0 to 8, and pwm value is 000 to 180.
+	
+	Example:
+
+	Wire.beginTransmission(4); // transmit to device #4 i.e, our servo
+  	Wire.write("$ servo 1 180 /n ");        
+  	Wire.endTransmission();    // stop transmitting
+  	delay(4000);
+
+Commands for servo in spi mode : it is same as above 
+Note:in spi mode the command ends with ‘\n’
+          “$_servo_no_pwm_\n”     / /no can be from 0 to 8, and pwm value is 000 to 180.
+
+Example:
+char c;
+
+digitalWrite(SS, LOW);    
+ for (const char * p = "$ servo 1 170 \n" ; c = *p; p++)
+    SPI.transfer (c);
+  digitalWrite(SS, HIGH);
+  
+ delay(3000);
+  
+  digitalWrite(SS, LOW);    
+ for (const char * p = "$ servo 3 170 \n" ; c = *p; p++)
+    SPI.transfer (c);
+  digitalWrite(SS, HIGH);
+
+
+note :after each instruction in all the mode minimum of 3 seconds delay is required.
